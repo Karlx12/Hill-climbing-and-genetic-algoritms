@@ -1,12 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algoritmos de Optimización</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple Hello World page.</p>
+  <header>
+    <h1>Algoritmos de Optimización</h1>
+    <p>Hill Climbing vs Algoritmos Genéticos</p>
+  </header>
+
+  <section class="integrantes">
+    <h2>👥 Integrantes del Grupo</h2>
+    <ul>
+      <li>Domingues Alba Carlos</li>
+      <li>Dueñas Blas Joseph Ali Ricardo</li>
+      <li>Hurtado Ramos Ronaldo Fabrizio</li>
+    </ul>
+  </section>
+
+  <main>
+    <section class="algoritmo">
+      <h2>🔺 Hill Climbing</h2>
+      <p>
+        Hill Climbing (escalada de colina) es un algoritmo de búsqueda heurística utilizado para resolver problemas de optimización. Su objetivo es encontrar la mejor solución posible partiendo de una solución inicial y mejorándola gradualmente mediante pequeños cambios. El algoritmo explora el entorno inmediato de la solución actual y se mueve hacia la dirección donde mejora el valor de la función objetivo.
+      </p>
+      <ul>
+        <li><strong>Proceso iterativo:</strong> en cada paso, se examinan las soluciones vecinas y se selecciona la mejor de ellas.</li>
+        <li><strong>Óptimo local:</strong> el algoritmo puede detenerse en una solución que es la mejor en su vecindad, pero no necesariamente la mejor globalmente.</li>
+        <li><strong>Aplicación:</strong> es útil para problemas donde se puede definir una función de evaluación y generar soluciones cercanas, como problemas de planificación o asignación.</li>
+        <li><strong>Limitación:</strong> no explora todo el espacio de soluciones, por lo que no garantiza encontrar la solución óptima global.</li>
+      </ul>
+    </section>
+
+    <section class="algoritmo">
+      <h2>🧬 Algoritmo Genético</h2>
+      <p>
+        Un Algoritmo Genético (GA) es una técnica de optimización basada en los principios de la evolución natural, como la selección, cruza (crossover) y mutación. Funciona con una población de posibles soluciones, representadas como cromosomas, que evolucionan a lo largo de varias generaciones con el objetivo de encontrar una solución óptima o cercana al óptimo.
+      </p>
+      <ul>
+        <li><strong>Representación genética:</strong> cada solución se codifica como una cadena (por ejemplo, un vector binario o numérico).</li>
+        <li><strong>Evaluación por fitness:</strong> cada individuo es evaluado usando una función de aptitud (fitness function) que mide qué tan buena es la solución.</li>
+        <li><strong>Cruce y mutación:</strong> se combinan soluciones para crear nuevas generaciones y se introducen pequeñas alteraciones para mantener la diversidad.</li>
+        <li><strong>Exploración global:</strong> al trabajar con muchas soluciones a la vez, tiene mayor capacidad para evitar quedarse atrapado en óptimos locales.</li>
+        <li><strong>Uso en problemas complejos:</strong> como diseño de redes, programación genética, optimización combinatoria, y aprendizaje automático.</li>
+      </ul>
+    </section>
+
+    <section class="comparacion">
+      <h2>📊 Comparación Rápida</h2>
+      <table>
+        <tr>
+          <th>Característica</th>
+          <th>Hill Climbing</th>
+          <th>Algoritmo Genético</th>
+        </tr>
+        <tr>
+          <td>Estrategia</td>
+          <td>Búsqueda local</td>
+          <td>Búsqueda poblacional</td>
+        </tr>
+        <tr>
+          <td>Escapa de óptimos locales</td>
+          <td>No</td>
+          <td>Sí</td>
+        </tr>
+        <tr>
+          <td>Inspiración</td>
+          <td>Heurística matemática</td>
+          <td>Teoría evolutiva</td>
+        </tr>
+        <tr>
+          <td>Velocidad</td>
+          <td>Alta (problemas simples)</td>
+          <td>Media (problemas complejos)</td>
+        </tr>
+        <tr>
+          <td>Uso de población</td>
+          <td>No (trabaja con una sola solución)</td>
+          <td>Sí (trabaja con múltiples soluciones)</td>
+        </tr>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - Algoritmos evolutivos</p>
+  </footer>
 </body>
 </html>
