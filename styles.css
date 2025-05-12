@@ -88,3 +88,24 @@
     background-color: #e0e0e0;
     margin-top: 30px;
   }
+  .imagen {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .imagen h2 {
+    color: #ff5722;
+    margin-bottom: 15px;
+  }
+  
+  .imagen img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  }
