@@ -15,7 +15,7 @@
   <section class="integrantes">
     <h2>👥 Integrantes del Grupo</h2>
     <ul>
-      <li>Dominguez Alba Carlos (0202114028)</li>
+      <li>Domingues Alba Carlos (0202114028)</li>
       <li>Dueñas Blas Joseph Ali Ricardo (0202114029)</li>
       <li>Hurtado Ramos Ronaldo Fabrizio (0202114034)</li>
     </ul>
@@ -87,10 +87,194 @@
         </tr>
       </table>
     </section>
+
+    <section class="problemas">
+      <h2>📝 Problemas de Optimización - Hill Climbing</h2>
+      
+      <div class="problema">
+        <h3>Enunciado 2: Optimización del Horario de Estudio</h3>
+        <p>
+          Un estudiante tiene disponibles 10 franjas horarias libres durante la semana, cada una con una duración y un nivel estimado de productividad (del 1 al 10). 
+          El objetivo es seleccionar las mejores franjas para maximizar su productividad semanal total, pero con una restricción: 
+          no debe estudiar más de 15 horas en total. Implementa un algoritmo de hill climbing que, partiendo de una selección aleatoria de franjas horarias, 
+          busque mejorar la productividad total sin superar el límite de horas. Usa Pandas para representar las franjas y NumPy para mutar la solución.
+        </p>
+        <pre><code class="language-python">
+import numpy as np
+import pandas as pd
+
+data = {
+    'Franja': ['L1', 'L2', 'M1', 'M2', 'M3', 'J1', 'J2', 'V1', 'V2', 'S1'],
+    'Duración': [2, 1.5, 2, 1, 3, 2.5, 1.5, 2, 3, 1],
+    'Productividad': [8, 6, 7, 5, 9, 8, 7, 6, 5, 4]
+}
+franjas = pd.DataFrame(data)
+
+def evaluar_solucion(solucion, franjas, max_horas=15):
+    horas_totales = np.sum(franjas['Duración'][solucion])
+    if horas_totales > max_horas:
+        return -np.inf
+    return np.sum(franjas['Productividad'][solucion])
+
+def generar_solucion_inicial(n_franjas, n_seleccionar):
+    return np.random.choice(n_franjas, size=n_seleccionar, replace=False)
+
+def generar_vecino(solucion, n_franjas):
+    vecino = solucion.copy()
+    idx_cambiar = np.random.randint(len(vecino))
+    posibles = [f for f in range(n_franjas) if f not in vecino]
+    if not posibles:
+        return vecino
+    vecino[idx_cambiar] = np.random.choice(posibles)
+    return vecino
+
+def hill_climbing(franjas, max_horas=15, max_iter=1000):
+    n_franjas = len(franjas)
+    n_seleccionar = max(1, n_franjas // 2)
+    solucion_actual = generar_solucion_inicial(n_franjas, n_seleccionar)
+    valor_actual = evaluar_solucion(solucion_actual, franjas, max_horas)
+    
+    for _ in range(max_iter):
+        vecino = generar_vecino(solucion_actual, n_franjas)
+        valor_vecino = evaluar_solucion(vecino, franjas, max_horas)
+        if valor_vecino > valor_actual:
+            solucion_actual = vecino
+            valor_actual = valor_vecino
+    
+    return solucion_actual, valor_actual
+
+mejor_solucion, mejor_valor = hill_climbing(franjas)
+print("Franjas:", franjas['Franja'][mejor_solucion].values)
+print("Productividad:", mejor_valor)
+print("Horas:", np.sum(franjas['Duración'][mejor_solucion]))
+        </code></pre>
+      </div>
+      <div class="problema">
+        <h3>Enunciado 3 (Selección óptima de platos en el menú universitario):</h3>
+        <p>
+          En la cafetería universitaria hay 8 platos diferentes. 
+          Cada plato tiene un precio, una cantidad de calorías y una puntuación 
+          de satisfacción (según encuestas de estudiantes). 
+          Un estudiante solo tiene S/20 para gastar por día y quiere obtener el
+          máximo nivel de satisfacción sin pasarse del presupuesto ni consumir 
+          más de 1000 calorías. Utiliza Pandas para representar el menú y NumPy 
+          para generar combinaciones de platos. Aplica hill climbing para 
+          encontrar la mejor combinación de 3 platos que maximicen 
+          la satisfacción bajo las restricciones indicadas.
+        </p>
+        <pre><code class="language-python">
+          import numpy as np
+          import pandas as pd
+          
+          data = {
+              'Plato': ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8'],
+              'Precio': [5, 7, 4, 8, 6, 9, 5, 7],
+              'Calorías': [300, 400, 250, 500, 350, 450, 200, 400],
+              'Satisfacción': [7, 8, 6, 9, 7, 8, 5, 6]
+          }
+          menu = pd.DataFrame(data)
+          
+          def evaluar_solucion(solucion, menu, max_precio=20, max_calorias=1000):
+              precio_total = np.sum(menu['Precio'][solucion])
+              calorias_total = np.sum(menu['Calorías'][solucion])
+              if precio_total > max_precio or calorias_total > max_calorias:
+                  return -np.inf
+              return np.sum(menu['Satisfacción'][solucion])
+          
+          def generar_solucion_inicial(n_platos, n_seleccionar=3):
+              return np.random.choice(n_platos, size=n_seleccionar, replace=False)
+          
+          def generar_vecino(solucion, n_platos):
+              vecino = solucion.copy()
+              idx_cambiar = np.random.randint(len(vecino))
+              posibles = [p for p in range(n_platos) if p not in vecino]
+              if not posibles:
+                  return vecino
+              vecino[idx_cambiar] = np.random.choice(posibles)
+              return vecino
+          
+          def hill_climbing(menu, max_precio=20, max_calorias=1000, max_iter=1000):
+              n_platos = len(menu)
+              solucion_actual = generar_solucion_inicial(n_platos)
+              valor_actual = evaluar_solucion(solucion_actual, menu, max_precio, max_calorias)
+              
+              for _ in range(max_iter):
+                  vecino = generar_vecino(solucion_actual, n_platos)
+                  valor_vecino = evaluar_solucion(vecino, menu, max_precio, max_calorias)
+                  if valor_vecino > valor_actual:
+                      solucion_actual = vecino
+                      valor_actual = valor_vecino
+              
+              return solucion_actual, valor_actual
+          
+          mejor_solucion, mejor_valor = hill_climbing(menu)
+          print("Platos:", menu['Plato'][mejor_solucion].values)
+          print("Satisfacción:", mejor_valor)
+          print("Precio:", np.sum(menu['Precio'][mejor_solucion]))
+          print("Calorías:", np.sum(menu['Calorías'][mejor_solucion]))
+        </code></pre>
+      </div>
+
+
+      <div class="problema">
+        <h3>Enunciado 4 (Elección de cursos electivos según afinidad y tiempo):</h3>
+        <p>
+          Un estudiante debe elegir 3 de entre 10 cursos electivos posibles. Cada curso tiene una carga horaria semanal, un nivel de interés personal (del 1 al 10), y una calificación histórica promedio (como estimador de facilidad). El objetivo es encontrar una combinación de cursos que maximice el interés total del estudiante, siempre que la carga horaria combinada no exceda 12 horas semanales. Usa Pandas para estructurar los datos de los cursos y NumPy para buscar combinaciones óptimas usando un enfoque de hill climbing.
+        </p>
+        <pre><code class="language-python">
+          import numpy as np
+          import pandas as pd
+          
+          data = {
+              'Curso': ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10'],
+              'Carga': [4, 3, 5, 2, 4, 3, 5, 2, 3, 4],
+              'Interés': [8, 7, 9, 6, 7, 8, 6, 5, 7, 8],
+              'Calificación': [7.5, 8.0, 6.5, 8.5, 7.0, 8.0, 6.0, 9.0, 7.5, 8.0]
+          }
+          cursos = pd.DataFrame(data)
+          
+          def evaluar_solucion(solucion, cursos, max_horas=12):
+              horas_totales = np.sum(cursos['Carga'][solucion])
+              if horas_totales > max_horas:
+                  return -np.inf
+              return np.sum(cursos['Interés'][solucion])
+          
+          def generar_solucion_inicial(n_cursos, n_seleccionar=3):
+              return np.random.choice(n_cursos, size=n_seleccionar, replace=False)
+          
+          def generar_vecino(solucion, n_cursos):
+              vecino = solucion.copy()
+              idx_cambiar = np.random.randint(len(vecino))
+              posibles = [c for c in range(n_cursos) if c not in vecino]
+              if not posibles:
+                  return vecino
+              vecino[idx_cambiar] = np.random.choice(posibles)
+              return vecino
+          
+          def hill_climbing(cursos, max_horas=12, max_iter=1000):
+              n_cursos = len(cursos)
+              solucion_actual = generar_solucion_inicial(n_cursos)
+              valor_actual = evaluar_solucion(solucion_actual, cursos, max_horas)
+              
+              for _ in range(max_iter):
+                  vecino = generar_vecino(solucion_actual, n_cursos)
+                  valor_vecino = evaluar_solucion(vecino, cursos, max_horas)
+                  if valor_vecino > valor_actual:
+                      solucion_actual = vecino
+                      valor_actual = valor_vecino
+              
+              return solucion_actual, valor_actual
+          
+          mejor_solucion, mejor_valor = hill_climbing(cursos)
+          print("Cursos:", cursos['Curso'][mejor_solucion].values)
+          print("Interés:", mejor_valor)
+          print("Carga:", np.sum(cursos['Carga'][mejor_solucion]))
+        </code></pre>
+      </div>
+    </section>
+
   </main>
 
-  <footer>
-    <p>© 2025 - Algoritmos evolutivos</p>
-  </footer>
 </body>
 </html>
+
